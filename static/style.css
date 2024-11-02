@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+.algo-button, .run-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.algo-button.selected {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+.run-button {
+    margin-top: 20px;
+    background-color: #008CBA; /* Blue */
+    color: white;
+}
+.output-box {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    width: 50%;
+    min-height: 100px; /* Minimum height to allow for initial content display */
+    max-height: 300px; /* Optional: Set a max height for scrolling */
+    overflow-y: auto; /* Allows scrolling if content exceeds max height */
+    font-size: 16px;
+    white-space: pre-wrap; /* Preserves whitespace and allows line breaks */
+}
+
+select {
+    padding: 8px;
+    margin: 10px;
+    font-size: 16px;
+}

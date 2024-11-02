@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Runner</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+    <!-- Algorithm Selection Buttons -->
+    <div class="button-container">
+        <button class="algo-button" onclick="selectAlgorithm('Algorithm 1')">Algorithm 1</button>
+        <button class="algo-button" onclick="selectAlgorithm('Algorithm 2')">Algorithm 2</button>
+        <button class="algo-button" onclick="selectAlgorithm('EditDistance')">Edit Distance</button>
+        <button class="algo-button" onclick="selectAlgorithm('Algorithm 4')">Algorithm 4</button>
+    </div>
+
+    <!-- Dropdown Menus for File Selection -->
+    <div>
+        <select id="dnaSequences">
+            <option value="">Select DNA Sequence</option>
+            {% for file in dna_sequences %}
+                <option value="{{ file }}">{{ file }}</option>
+            {% endfor %}
+        </select>
+        
+        <select id="dnaSequenceToCheck">
+            <option value="">Select DNA Sequence to Check</option>
+            {% for file in dna_sequence_to_check %}
+                <option value="{{ file }}">{{ file }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Run Algorithm Button -->
+    <button class="run-button" onclick="runSelectedAlgorithm()">Run Algorithm</button>
+
+    <!-- Output Text Box -->
+    <div id="output" class="output-box">Output will appear here</div>
+
+    <script>
+        let selectedAlgorithm = null;
+
+        // Function to select an algorithm
+        function selectAlgorithm(algo) {
+            // Set the selected algorithm
+            selectedAlgorithm = algo;
+
+            // Clear previous selection styles
+            document.querySelectorAll('.algo-button').forEach(button => {
+                button.classList.remove('selected');
+            });
+
+            // Highlight the selected button
+            event.target.classList.add('selected');
+        }
+
+        // Run algorithm on click
+        function runSelectedAlgorithm() {
+            const dnaSeqFile = document.getElementById("dnaSequences").value;
+            const dnaCheckFile = document.getElementById("dnaSequenceToCheck").value;
+
+            if (!selectedAlgorithm) {
+                document.getElementById("output").textContent = "Please select an algorithm.";
+                return;
+            }
+
+            if (!dnaSeqFile || !dnaCheckFile) {
+                document.getElementById("output").textContent = "Please select both DNA files.";
+                return;
+            }
+
+            // Make a POST request to run the algorithm
+            fetch('/run_algorithm', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    algorithm: selectedAlgorithm,
+                    dna_seq_file: dnaSeqFile,
+                    dna_check_file: dnaCheckFile
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                formattedOutput = data.output.replace(/\n/g, '<br>');
+                document.getElementById('output').innerHTML = formattedOutput;
+                //document.getElementById("output").textContent = data.output;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("output").textContent = "An error occurred while running the algorithm.";
+            });
+        }
+    </script>
+
+</body>
+</html>
