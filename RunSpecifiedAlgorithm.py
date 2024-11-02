@@ -37,13 +37,15 @@ def runAlgorithm(DNAQuery, DNASeqs, algoType):
     DNASeqs = parseDNASeqs(DNASeqs)
     DNAQuery = parseDNAQuery(DNAQuery)
 
-    bestSim = -(2**31)
+    bestSim = (2**31)
     bestSeq = None
     for seq in DNASeqs:
         print(seq)
         algorithm = ALGORITHMS[algoType]
         currSim = algorithm.runAlgorithm(str(DNASeqs[seq]), DNAQuery)
-        if currSim > bestSim:
+        print(len(str(DNASeqs[seq])))
+        #currSim = algorithm.runAlgorithm("Shakespeare", "shake spear")
+        if currSim < bestSim:
             bestSim = currSim
             bestSeq = seq
     e_t = d.datetime.now()
