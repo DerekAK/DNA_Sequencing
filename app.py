@@ -35,5 +35,6 @@ def run_algorithm(): # handles POST requests from app.py when app.py sends over 
 
 if __name__ == '__main__':
     #app.run(debug=True)
-    app.run(port=5001, debug=True)
+    app.run(host = '0.0.0.0', port=5001, debug=True)
+    #app.run(port=5001, debug=True)
 
