@@ -10,7 +10,7 @@
 
     <!-- Algorithm Selection Buttons -->
     <div class="button-container">
-        <button class="algo-button" onclick="selectAlgorithm('Algorithm 1')">Algorithm 1</button>
+        <button class="algo-button" onclick="selectAlgorithm('LongestCommonSubstring')">Longest Common Substring</button>
         <button class="algo-button" onclick="selectAlgorithm('Algorithm 2')">Algorithm 2</button>
         <button class="algo-button" onclick="selectAlgorithm('EditDistance')">Edit Distance</button>
         <button class="algo-button" onclick="selectAlgorithm('Algorithm 4')">Algorithm 4</button>
@@ -58,6 +58,7 @@
 
         // Run algorithm on click
         function runSelectedAlgorithm() {
+            document.getElementById("output").textContent = "LOADING";
             const dnaSeqFile = document.getElementById("dnaSequences").value;
             const dnaCheckFile = document.getElementById("dnaSequenceToCheck").value;
 
@@ -83,9 +84,9 @@
             })
             .then(response => response.json())
             .then(data => {
-                formattedOutput = data.output.replace(/\n/g, '<br>');
-                document.getElementById('output').innerHTML = formattedOutput;
-                //document.getElementById("output").textContent = data.output;
+                //formattedOutput = data.output.replace(/\n/g, '<br>');
+                //document.getElementById('output').innerHTML = formattedOutput;
+                document.getElementById("output").textContent = data.output;
             })
             .catch(error => {
                 console.error("Error:", error);

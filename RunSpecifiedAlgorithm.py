@@ -1,8 +1,9 @@
 import datetime as d
-from algorithms import editDistance
+from algorithms import editDistance, longestCommonSubstring
 
 ALGORITHMS = {
-    'EditDistance': editDistance
+    'EditDistance': editDistance,
+    'LongestCommonSubstring': longestCommonSubstring
 }
 def parseDNASeqs(file):
     seqs = {}
@@ -10,11 +11,11 @@ def parseDNASeqs(file):
     file_object = open(file_path, mode='r', encoding='utf-8')
     currSeq = None
     for line in file_object:
+        line = line.strip() # get rid of "\n" characters
         if line[0] == ">":
             currSeq = line
             seqs[currSeq] = ""
         else: # an actual DNA sequence line
-            line = line.strip() # get rid of "\n" characters
             seqs[currSeq] += line
     # for seq in seqs:
     #     print(seq)
@@ -31,21 +32,45 @@ def parseDNAQuery(file):
     return s
 
 
-def runAlgorithm(DNAQuery, DNASeqs, algoType):
+def runAlgorithmLow(DNAQuery, DNASeqs, algoType):
     s_t = d.datetime.now()
 
     DNASeqs = parseDNASeqs(DNASeqs)
     DNAQuery = parseDNAQuery(DNAQuery)
 
-    bestSim = (2**31)
+    bestSim = 2**31
     bestSeq = None
     for seq in DNASeqs:
-        print(seq)
+        print("Sequence name:", seq)
+        print("Length of sequence:", len(str(DNASeqs[seq])))
         algorithm = ALGORITHMS[algoType]
         currSim = algorithm.runAlgorithm(str(DNASeqs[seq]), DNAQuery)
-        print(len(str(DNASeqs[seq])))
         #currSim = algorithm.runAlgorithm("Shakespeare", "shake spear")
+        print("Sim Score:", currSim, "\n")
         if currSim < bestSim:
+            bestSim = currSim
+            bestSeq = seq
+    e_t = d.datetime.now()
+    totalTime = (e_t - s_t).total_seconds()
+
+    return bestSeq, bestSim, totalTime
+
+def runAlgorithmHigh(DNAQuery, DNASeqs, algoType):
+    s_t = d.datetime.now()
+
+    DNASeqs = parseDNASeqs(DNASeqs)
+    DNAQuery = parseDNAQuery(DNAQuery)
+
+    bestSim = -(2**31)
+    bestSeq = None
+    for seq in DNASeqs:
+        print("Sequence name:", seq)
+        print("Length of sequence:", len(str(DNASeqs[seq])))
+        algorithm = ALGORITHMS[algoType]
+        currSim = algorithm.runAlgorithm(str(DNASeqs[seq]), DNAQuery)
+        #currSim = algorithm.runAlgorithm("Shakespeare", "shake spear")
+        print("Sim Score:", currSim, "\n")
+        if currSim > bestSim:
             bestSim = currSim
             bestSeq = seq
     e_t = d.datetime.now()

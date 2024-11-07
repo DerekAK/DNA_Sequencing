@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import os
-from RunSpecifiedAlgorithm import runAlgorithm
+from RunSpecifiedAlgorithm import runAlgorithmHigh, runAlgorithmLow
 from algorithms import editDistance
 
 app = Flask(__name__)
@@ -26,8 +26,12 @@ def run_algorithm(): # handles POST requests from app.py when app.py sends over 
     # Here you would load and run the chosen algorithm
     # For demonstration, we simulate output
 
+    print("\nAlgorithm selected:", algorithm)
 
-    bestSeq, bestSim, totalTime = runAlgorithm(dna_check_file, dna_seq_file, algorithm)
+    if algorithm == "EditDistance":
+        bestSeq, bestSim, totalTime = runAlgorithmLow(dna_check_file, dna_seq_file, algorithm)
+    else:
+        bestSeq, bestSim, totalTime = runAlgorithmHigh(dna_check_file, dna_seq_file, algorithm)
 
     output = f"Algorithm: {algorithm}\n\nSequences file: {dna_seq_file}\n\nQuery file: {dna_check_file}\n\nBest Sequence: {bestSeq}\nSim score: {bestSim}\n\nTotal time: {totalTime} seconds"
 
