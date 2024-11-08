@@ -1,10 +1,11 @@
 import datetime as d
-from algorithms import editDistance, longestCommonSubstring, longestCommonSubsequence
+from algorithms import editDistance, longestCommonSubstring, longestCommonSubsequence, customAlgorithm
 
 ALGORITHMS = {
     'EditDistance': editDistance,
     'LongestCommonSubstring': longestCommonSubstring,
-    'LongestCommonSubsequence': longestCommonSubsequence
+    'LongestCommonSubsequence': longestCommonSubsequence,
+    'CustomAlgorithm': customAlgorithm
 }
 def parseDNASeqs(file):
     seqs = {}
