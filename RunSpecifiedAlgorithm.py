@@ -28,6 +28,7 @@ def parseDNAQuery(file):
     file_object = open(file_path, mode='r', encoding='utf-8')
     s = ""
     for line in file_object:
+        line = line.strip()
         s += line
     file_object.close()
     return s
@@ -66,9 +67,11 @@ def runAlgorithmHigh(DNAQuery, DNASeqs, algoType):
     bestSeq = None
     for seq in DNASeqs:
         print("Sequence name:", seq)
-        print("Length of sequence:", len(str(DNASeqs[seq])))
+        print("Length of sequence:", len(DNASeqs[seq]))
+        # print("Sequence itself:", DNASeqs[seq])
+        # print("Query sequence:", DNAQuery)
         algorithm = ALGORITHMS[algoType]
-        currSim = algorithm.runAlgorithm(str(DNASeqs[seq]), DNAQuery)
+        currSim = algorithm.runAlgorithm(DNASeqs[seq], DNAQuery)
         #currSim = algorithm.runAlgorithm("Shakespeare", "shake spear")
         print("Sim Score:", currSim, "\n")
         if currSim > bestSim:
