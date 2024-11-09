@@ -15,12 +15,12 @@ def runAlgorithm(t, s):
     similarity_ratio = lcs_length_total / max(len(t), len(s))
 
     # Similarity score only if sequences are close in length
-    if len(t) == len(s) or similarity_ratio > 0.9:
+    if len(t) == len(s) or similarity_ratio > 0.5:
         score += similarity_ratio * 10
 
     # Length difference penalty with stronger impact
     length_diff = abs(len(t) - len(s))
-    score -= length_diff * 20  # Increased weight for unmatched trailing characters
+    score -= length_diff * 10  # Increased weight for unmatched trailing characters
 
     # Apply direct penalties for character mismatches
     for i in range(min(len(t), len(s))):

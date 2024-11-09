@@ -1,0 +1,64 @@
+Longest Common Substring:
+This algorithm uses a matrix to store the longest common substring between s and t. However, rather than using an entire 
+matrix it uses only a single array called matrix_row and a variable called saved_value which represents the upper-left 
+cell in the matrix. Since each row only relies on the previous row, and each value only relies on the one diagonal up 
+and to the left in the matrix we can optimize the algorithm by using an array and storing the value from the previous 
+row in the same column. When the algorithm completes, 
+t[substring_start : max_number_row + 1] properly indexes the longest common substring. 
+Assume that n is the length of the string input and m is the length of the query. The outer-loop iterates over t meaning 
+it iterates m times. Then, in the inner-loop for each character in t, we iterate over each character in s so n times per 
+iteration. All work within and outside the loops is constant so O(1). In total, we are doing O(n) work m times for every 
+iteration of the outer-loop making the total runtime O(n*m). 
+_____________________________________________
+
+Longest Common Subsequence: 
+This function uses dynamic programming to find the longest common subsequence between two sequences t and s. The function 
+initializes a table to store the longest common subsequence up to a specific index, and the table at [len(t)][len(s)] represents 
+the longest common subsequence when taking into account all of both strings. The table is initialized to be a length and 
+width of (s+1) and (t+1), and this is to handle the case if t or s is empty. The function checks if the character of both 
+strings at a certain index is the same, and if it is the table is updated to reflect that. If it is not, the table is also 
+updated by taking the maximum value from either incrementing i or j. The function has a time complexity of O(n*m), where 
+n and m are the length of the input strings. This is due to the initialization of the table, as it has to include all of 
+the characters in each string. 
+_____________________________________________
+
+Edit Distance:
+This function finds and returns the edit distance between two input sequences, which is the minimum number of insertions, 
+deletions, or substitutions to transform one of the sequences into the other. So the larger the edit distance of two sequences, 
+the more dissimilar those two sequences are to each other. The function is built using a recursive structure in which the edit 
+distance of two strings is equal to the edit distance of the last little bit of the string plus the edit distance of the rest 
+of the entire sequence. What I mean by “last little bit” is that there are three different cases that need to be compared for 
+each pair of input strings, one for substitution, insertion, and deletion. So for substitution, the last little bit of the
+string would be the last letter of each string (strA[-1], strB[-2]), while the rest of the string would be the entire string 
+except the last character of each string (strA[:-1], strB[:-1]). If we were to just take this case, this would be a hamming 
+distance algorithm, where the only possible operation you could perform on one string to make it more similar to the other 
+was with substitution. However, edit distance also allows deletions and insertions, so for each pair of input strings, the 
+edit distance is equal to:
+min(editDistance(seqA[:-1], seqB[:-1]) + 1, #substitution
+    editDistance(seqA[:-1], seqB) + 1, #insertion
+    editDistance(seqA, seqB[:-1]) + 1 #deletion
+)
+To calculate the runtime complexity of this code, we can consider the subproblem space of each recursive call, which would 
+just be each string, and we can see that the runtime of this function will be dependent on the length of each string, m & n. 
+Because we are using dynamic programming, and as can be seen in the bottom up version of this algorithm, we are filling up 
+each element in the m*n subproblem space once. So the runtime of this function will simply be O(m*n), with m and n being the 
+length of the two input strings. 
+
+_____________________________________________
+
+Custom Algorithm:
+This function also uses dynamic programming, using the same approach as the original longest common subsequence function. 
+However, the function has additional aspects that add to the overall score of a sequence. In addition to considering the LCS, 
+the function also considers the difference in length between the two sequences, so a larger difference in length implies a 
+lower similarity. The function also deducts a slight penalty for each character that differs at the same position in each 
+sequence, and a penalty is also applied for extra characters at the end of either sequence. The base score is set at 1000, 
+and it is altered based on the factors stated above. The similarity_ratio is calculated by dividing the length of the LCS 
+by the length of the longest input, either s or t. The point of this is to get a similarity ratio that boosts the score of 
+a sequence. If this ratio is over 0.5, we multiply it by 10 and add it to the overall score. Additionally, the difference in 
+length * 10 is subtracted from the score in an attempt to account for two strings that greatly differ in length. The function 
+also deducts a direct penalty for character mismatches, as each mismatched character subtracts 2 from the overall score. 
+Finally, each trailing character is deducted .5 points from the score to balance things out. The function still has a 
+time complexity of O(n*m), where n and m are the length of the input strings. It has the same complexity as the regular
+LCS function because the added calculations of the similarity ratio, length differences, and character mismatches are
+linear operations and do not significantly impact the overall time complexity, which is still dominated by the creation
+of the table for dynamic programming. Therefore, the time complexity is still O(n*m). 
